@@ -91,7 +91,7 @@ function App() {
   return (
     <div className="container">
       <h1>🌤️ Weather App</h1>
-      <p>by [Your Name] – PM Accelerator Intern Assessment</p>
+      <p>by Ryan Wang – PM Accelerator Intern Assessment</p>
       
       <SearchForm onSearch={handleSearch} />
       
