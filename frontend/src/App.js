@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 import './App.css';
 import SearchForm from './components/SearchForm';
 import CurrentWeather from './components/CurrentWeather';
@@ -24,7 +25,7 @@ function App() {
 
   const fetchHistory = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/weather/queries');
+      const res = await axios.get(`${API_BASE_URL}/api/weather/queries`);
       setHistory(res.data);
     } catch (err) {
       console.error('Failed to fetch history:', err);
@@ -42,9 +43,9 @@ function App() {
     try {
       // Fetch current weather and forecast in parallel
       const [currentRes, forecastRes] = await Promise.all([
-  axios.get(`http://localhost:5000/api/weather/current?location=${encodeURIComponent(searchLocation)}`),
-  axios.get(`http://localhost:5000/api/weather/forecast?location=${encodeURIComponent(searchLocation)}`)
-]);
+        axios.get(`${API_BASE_URL}/api/weather/current?location=${encodeURIComponent(searchLocation)}`),
+        axios.get(`${API_BASE_URL}/api/weather/forecast?location=${encodeURIComponent(searchLocation)}`)
+      ]);
 
       setWeatherData(currentRes.data);
       setForecastData(forecastRes.data);
@@ -62,7 +63,7 @@ function App() {
       return;
     }
     try {
-      await axios.post('http://localhost:5000/api/weather/queries', {
+      await axios.post(`${API_BASE_URL}/api/weather/queries`, {
         location,
         startDate: startDate || null,
         endDate: endDate || null
@@ -77,7 +78,7 @@ function App() {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this record?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/weather/queries/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/weather/queries/${id}`);
       fetchHistory();
     } catch (err) {
       alert('Error deleting: ' + err.message);
@@ -85,7 +86,7 @@ function App() {
   };
 
   const handleExport = () => {
-    window.open('http://localhost:5000/api/weather/export/csv', '_blank');
+    window.open(`${API_BASE_URL}/api/weather/export/csv`, '_blank');
   };
 
   return (
